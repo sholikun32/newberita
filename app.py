@@ -16,20 +16,30 @@ def scrape_google_news(query, location):
     for article in articles:
         title = article.get_text()
         link = article.a["href"]
-        
-        # Mengambil informasi lebih lanjut dari halaman berita
-        article_response = requests.get(f"{base_url}{link}")
+
+        # Dapatkan deskripsi dan nama situs/web dari setiap artikel
+        article_url = f"{base_url}{link[1:]}"
+        article_response = requests.get(article_url)
         article_soup = BeautifulSoup(article_response.text, "html.parser")
         
-        # Ekstrak deskripsi dan nama web
-        description = article_soup.find("div", class_="Da10Tb").text
-        source = article_soup.find("a", class_="wEwyrc AVN2gc uQIVzc Sksgp").text
-
+        description = article_soup.find("meta", {"name": "description"})
+        site_name = article_soup.find("meta", {"property": "og:site_name"})
+        
+        if description:
+            description = description["content"]
+        else:
+            description = ""
+        
+        if site_name:
+            site_name = site_name["content"]
+        else:
+            site_name = ""
+        
         news_data.append({
             "title": title,
+            "link": f"{base_url}{link}",
             "description": description,
-            "source": source,
-            "link": f"{base_url}{link}"
+            "site_name": site_name
         })
 
     return news_data
