@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
+import pandas as pd  # Tambahkan import pandas
 
 # Fungsi untuk melakukan web scraping dari Google News
 def scrape_google_news(query, location):
@@ -16,31 +16,7 @@ def scrape_google_news(query, location):
     for article in articles:
         title = article.get_text()
         link = article.a["href"]
-
-        # Dapatkan deskripsi dan nama situs/web dari setiap artikel
-        article_url = f"{base_url}{link[1:]}"
-        article_response = requests.get(article_url)
-        article_soup = BeautifulSoup(article_response.text, "html.parser")
-        
-        description = article_soup.find("meta", {"name": "description"})
-        site_name = article_soup.find("meta", {"property": "og:site_name"})
-        
-        if description:
-            description = description["content"]
-        else:
-            description = ""
-        
-        if site_name:
-            site_name = site_name["content"]
-        else:
-            site_name = ""
-        
-        news_data.append({
-            "title": title,
-            "link": f"{base_url}{link}",
-            "description": description,
-            "site_name": site_name
-        })
+        news_data.append({"title": title, "link": f"{base_url}{link}"})
 
     return news_data
 
