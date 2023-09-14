@@ -23,14 +23,17 @@ if response.status_code == 200:
 
     # Menampilkan informasi cuaca
     st.subheader("Informasi Cuaca")
-    st.write(f"Lokasi: {data['location']['name']}, {data['location']['country']}")
+
+    # Memeriksa apakah informasi lokasi tersedia dalam respons
+    if 'location' in data:
+        st.write(f"Lokasi: {data['location']['name']}, {data['location'].get('country', 'Negara Tidak Diketahui')}")
 
     # Menampilkan prakiraan cuaca
     st.subheader("Prakiraan Cuaca")
-    for forecast in data['data']['timelines'][0]['intervals']:
-        time = forecast['startTime']
-        temperature = forecast['values']['temperature']
-        precipitation = forecast['values']['precipitationIntensity']
+    for forecast in data.get('data', {}).get('timelines', [])[0].get('intervals', []):
+        time = forecast.get('startTime', 'Waktu Tidak Tersedia')
+        temperature = forecast['values'].get('temperature', 'Data Temperatur Tidak Tersedia')
+        precipitation = forecast['values'].get('precipitationIntensity', 'Data Intensitas Presipitasi Tidak Tersedia')
         st.write(f"Waktu: {time}, Temperatur: {temperature}°C, Intensitas Presipitasi: {precipitation} mm/h")
 
 else:
