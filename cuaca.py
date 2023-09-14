@@ -37,7 +37,7 @@ st.title("Aplikasi Prediksi Cuaca Semarang")
 st.write("Aplikasi ini menampilkan cuaca saat ini dan prediksi cuaca satu minggu ke depan untuk kota Semarang.")
 
 # Gantilah 'YOUR_API_KEY' dengan API key Tomorrow.io Anda
-api_key = 'YOUR_API_KEY'
+api_key = 'rzNAAHgYeddgMbZf5nWaTC6gnn4q2rM3'
 latitude = -6.9716  # Koordinat lintang Semarang
 longitude = 110.4256  # Koordinat bujur Semarang
 
