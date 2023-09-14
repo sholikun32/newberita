@@ -4,9 +4,9 @@ import requests
 # Judul aplikasi
 st.title("Aplikasi Prakiraan Cuaca Kota Semarang")
 
-# Koordinat lokasi Semarang
-latitude = -7.005145  # Ganti dengan koordinat latitude yang sesuai
-longitude = 110.438125  # Ganti dengan koordinat longitude yang sesuai
+# Koordinat lokasi Kecamatan Semarang Utara
+latitude = -6.9866
+longitude = 110.4314
 
 # API Key
 api_key = "rzNAAHgYeddgMbZf5nWaTC6gnn4q2rM3"
