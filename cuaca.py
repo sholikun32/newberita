@@ -1,51 +1,51 @@
 import streamlit as st
 import requests
-from datetime import datetime
+import json
 
-# Fungsi untuk mendapatkan data cuaca
-def get_weather_data(api_key, latitude, longitude):
-    url = f'https://api.tomorrow.io/v4/weather/forecast?location={latitude},{longitude}&apikey={api_key}'
-    response = requests.get(url)
-    data = response.json()
-    return data
+# URL dan API Key Tomorrow.io
+url = 'https://api.tomorrow.io/v4/weather/forecast'
+api_key = 'YOUR_API_KEY'  # Gantilah dengan API Key Anda sendiri
+location = '42.3478,-71.0466'  # Koordinat Semarang
 
-# Fungsi untuk menampilkan data cuaca saat ini
-def display_current_weather(data):
-    current_weather = data['current']
-    temperature = current_weather['temperature']
-    weather_description = current_weather['weather']['description']
-    st.write(f"**Cuaca saat ini:** {weather_description}")
-    st.write(f"**Suhu saat ini:** {temperature}°C")
+# Fungsi untuk mendapatkan data cuaca dari API Tomorrow.io
+def get_weather_data(api_key, location):
+    params = {
+        'location': location,
+        'apikey': api_key
+    }
+    response = requests.get(url, params=params)
+    return response.json()
 
-# Fungsi untuk menampilkan prediksi cuaca satu minggu ke depan
-def display_weekly_forecast(data):
-    daily_forecast = data['daily']['data']
-    st.write("**Prediksi Cuaca Minggu Ini:**")
-    for day_data in daily_forecast:
-        date = datetime.utcfromtimestamp(day_data['time']).strftime('%Y-%m-%d')
-        temperature_min = day_data['temperatureMin']
-        temperature_max = day_data['temperatureMax']
-        weather_description = day_data['weather']['description']
-        st.write(f"**Tanggal:** {date}")
-        st.write(f"**Cuaca:** {weather_description}")
-        st.write(f"**Suhu Min:** {temperature_min}°C")
-        st.write(f"**Suhu Max:** {temperature_max}°C")
-        st.write("---")
+# Mengambil data cuaca dari API
+weather_data = get_weather_data(api_key, location)
 
-# Judul dan deskripsi aplikasi
-st.title("Aplikasi Prediksi Cuaca Semarang")
-st.write("Aplikasi ini menampilkan cuaca saat ini dan prediksi cuaca satu minggu ke depan untuk kota Semarang.")
-
-# Gantilah 'YOUR_API_KEY' dengan API key Tomorrow.io Anda
-api_key = 'rzNAAHgYeddgMbZf5nWaTC6gnn4q2rM3'
-latitude = -6.9716  # Koordinat lintang Semarang
-longitude = 110.4256  # Koordinat bujur Semarang
-
-# Mendapatkan data cuaca dari API
-weather_data = get_weather_data(api_key, latitude, longitude)
+# Menampilkan judul aplikasi
+st.title('Perkiraan Cuaca dan Prediksi Cuaca Seminggu ke Depan di Semarang')
 
 # Menampilkan data cuaca saat ini
-display_current_weather(weather_data)
+current_weather = weather_data.get('current', {})
+if current_weather:
+    st.subheader('Cuaca saat ini')
+    st.write(f'Temperatur: {current_weather.get("temperature")} °C')
+    st.write(f'Kelembaban: {current_weather.get("humidity")}%')
+    st.write(f'Cuaca: {current_weather.get("weather").get("description")}')
 
 # Menampilkan prediksi cuaca satu minggu ke depan
-display_weekly_forecast(weather_data)
+daily_forecast = weather_data.get('daily', {}).get('data', [])
+if daily_forecast:
+    st.subheader('Prediksi Cuaca 1 Minggu ke Depan')
+    for day in daily_forecast:
+        date = day.get('time')
+        temperature_high = day.get('temperatureHigh')
+        temperature_low = day.get('temperatureLow')
+        weather_description = day.get('weather').get('description')
+        st.write(f'Date: {date}')
+        st.write(f'Temperature High: {temperature_high} °C')
+        st.write(f'Temperature Low: {temperature_low} °C')
+        st.write(f'Weather: {weather_description}')
+        st.write('---')
+else:
+    st.warning('Data prediksi cuaca tidak tersedia.')
+
+# Menambahkan tautan ke sumber data
+st.markdown('[Sumber Data](https://www.tomorrow.io/weather-api/)')
