@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd  # Tambahkan import pandas
 
 # Fungsi untuk melakukan web scraping dari Google News
 def scrape_google_news(query, location):
@@ -33,12 +34,16 @@ if st.button("Cari Berita"):
 
         if news_data:
             st.success("Berita ditemukan!")
-            for news in news_data:
-                st.markdown(f"**{news['title']}**")
-                st.write(f"[Baca Lebih Lanjut]({news['link']})")
+
+            # Membuat DataFrame dari data berita
+            df = pd.DataFrame(news_data)
+
+            # Menampilkan tabel
+            st.table(df)
         else:
             st.warning("Tidak ada berita yang ditemukan.")
 
+# Visualisasi grafik dan Word Cloud (seperti sebelumnya)
+
 # Menampilkan footer
 st.text("Dibuat oleh [Nama Anda]")
-
