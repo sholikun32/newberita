@@ -21,7 +21,7 @@ def scrape_google_news(query, location):
     return news_data
 
 # Streamlit UI
-st.title("Sistem Sreaping Berita Tren Kesehatan Dinas Kesehatan Kota Semarang")
+st.title("Sistem Sreaping Berita Trending Dinas Kesehatan Kota Semarang")
 query = st.text_input("Masukkan kata kunci berita", "covid-19")
 location = st.text_input("Lokasi (misal: Semarang)", "Semarang")
 
