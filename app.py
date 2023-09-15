@@ -47,3 +47,4 @@ if st.button("Cari Berita"):
 
 # Menampilkan footer
 st.text("Dibuat oleh Sholikun")
+st.text("Sumber https://news.google.com")
