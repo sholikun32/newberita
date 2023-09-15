@@ -46,4 +46,4 @@ if st.button("Cari Berita"):
 # Visualisasi grafik dan Word Cloud (seperti sebelumnya)
 
 # Menampilkan footer
-st.text("Dibuat oleh [Nama Anda]")
+st.text("Dibuat oleh Sholikun")
